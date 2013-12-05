@@ -1,4 +1,4 @@
-maven
+watermark
 =====
 
-Basic archetype
+Basic watermark service
