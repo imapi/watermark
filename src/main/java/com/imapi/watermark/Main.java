@@ -1,7 +1,12 @@
 package com.imapi.watermark;
 
+import org.apache.log4j.xml.DOMConfigurator;
+
 /**
- * Created by ibon on 05.12.13.
+ *
  */
 public class Main {
+    static {
+        DOMConfigurator.configure("conf/log4j.xml");
+    }
 }
