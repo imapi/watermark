@@ -6,11 +6,12 @@ public class Book extends Document {
     private String topic;
 
     @Override
-    public Map<String, String> generateWatermark() {
-        Map<String, String> watermark = super.generateWatermark();
-        watermark.put("content", "journal");
+    public void generate(Progress progress) {
+        Map<String, String> watermark = generateBaseWatermark();
+        progress.update("40%");
+        watermark.put("content", "book");
         watermark.put("topic", topic);
-        return watermark;
+        progress.ok(watermark);
     }
 
     public String getTopic() {

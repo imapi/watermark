@@ -5,9 +5,10 @@ import java.util.Map;
 public class Journal extends Document {
 
     @Override
-    public Map<String, String> generateWatermark() {
-        Map<String, String> watermark = super.generateWatermark();
+    public void generate(Progress progress) {
+        Map<String, String> watermark = generateBaseWatermark();
+        progress.update("50%");
         watermark.put("content", "journal");
-        return watermark;
+        progress.ok(watermark);
     }
 }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script>
+        var send = function (url, type, data, callback) {
+            var request = new XMLHttpRequest();
+            request.open(type, url);
+            request.onreadystatechange = function () {
+                if (request.readyState === 4 && callback)
+                    callback(request);
+            };
+            request.setRequestHeader("Content-Type", "application/json");
+            request.send(JSON.stringify(data));
+        };
+
+        var poll = function(id, callback) {
+            var timer = setInterval(function() {
+                send('/documents/' + id, 'GET', {}, function(response) {
+                    if (response.status === 200 || response.status === 404) {
+                        clearInterval(timer);
+                    }
+                    callback(response.response);
+                });
+            }, 100);
+        };
+
+        var submit = function() {
+            var data ={};
+            data.title = document.getElementById('title').value;
+            data.author = document.getElementById('author').value;
+            topic = document.getElementById('topic').value.trim();
+            if (topic) {
+                data.topic = topic;
+                data.type = 'book';
+            } else {
+                data.type = 'journal';
+            }
+            send('/documents', 'POST', data, function (response) {
+                if (response.status < 300) {
+                    poll(JSON.parse(response.response), function(data) {
+                        document.getElementById('result').innerHTML = data;
+                    });
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<div id="content">
+    <label for="title">Title</label>
+    <input id="title"/>
+
+    <label for="author">Author</label>
+    <input id="author"/>
+
+    <label for="topic">Topic(left empty for journal)</label>
+    <input id="topic"/>
+
+    <button onclick="submit()">Send</button>
+
+    <div id="result"></div>
+</div>
+</body>
+</html>

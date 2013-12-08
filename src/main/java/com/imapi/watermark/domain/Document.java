@@ -3,10 +3,10 @@ package com.imapi.watermark.domain;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Document implements Watermarkable<Map<String, String>> {
+public abstract class Document implements Watermarkable {
     private String title;
     private String author;
-    private Map<String, String> watermark;
+    private Map<String, String> watermark = new HashMap<String, String>(3);
 
     public String getAuthor() {
         return author;
@@ -32,11 +32,15 @@ public abstract class Document implements Watermarkable<Map<String, String>> {
         this.watermark = watermark;
     }
 
-    @Override
-    public Map<String, String> generateWatermark() {
+    protected Map<String, String> generateBaseWatermark() {
         Map<String, String> watermark = new HashMap<String, String>(3);
         watermark.put("title", title);
         watermark.put("author", author);
         return watermark;
+    }
+
+    @Override
+    public void put(Map<String, String> watermark) {
+        this.watermark = watermark;
     }
 }
