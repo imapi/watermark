@@ -6,16 +6,14 @@ import java.io.Serializable;
 import java.util.UUID;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ivan_bondarenko
- * Date: 12/6/13
- * Time: 2:18 PM
- * To change this template use File | Settings | File Templates.
+ * Internal serializable object used for computations.
  */
 class WatermarkFrame implements Serializable {
+
     private final Watermarkable watermarkable;
     private final Status status;
     private final UUID id;
+
     public WatermarkFrame(UUID id, Watermarkable watermarkable, Status status) {
         this.id = id;
         this.watermarkable = watermarkable;

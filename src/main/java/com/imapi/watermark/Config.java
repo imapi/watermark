@@ -6,11 +6,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ivan_bondarenko
- * Date: 12/8/13
- * Time: 11:05 PM
- * To change this template use File | Settings | File Templates.
+ * Configuration helper. Uses apache commons configuration.
  */
 public class Config {
     private static Configuration config;
@@ -23,6 +19,11 @@ public class Config {
         }
     }
 
+    /**
+     * Getter for configuration object.
+     *
+     * @return Properties file or empty configuration
+     */
     public static Configuration getConfig() {
         return config;
     }

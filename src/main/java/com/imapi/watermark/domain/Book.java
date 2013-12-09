@@ -2,9 +2,17 @@ package com.imapi.watermark.domain;
 
 import java.util.Map;
 
+/**
+ * Book domain class, used in serialization, therefore should have default constructor.
+ *
+ * @author Ivan Bondarenko
+ */
 public class Book extends Document {
     private String topic;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void generate(Progress progress) {
         Map<String, String> watermark = generateBaseWatermark();

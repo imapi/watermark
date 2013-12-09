@@ -11,18 +11,28 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
+/**
+ * Internal processing helper.
+ */
 class WorkersBootstrap implements Bind.MapListener<UUID, WatermarkFrame> {
 
-    private static final Configuration conf = Config.getConfig();
+    private static final Configuration CONF = Config.getConfig();
 
     private final HTreeMap<UUID, WatermarkFrame> queue;
-    private final ExecutorService EXECUTOR = Executors.newFixedThreadPool(conf.getInt("workers.num", 10));
+    private final ExecutorService EXECUTOR = Executors.newFixedThreadPool(CONF.getInt("workers.num", 10));
 
+    /**
+     * Queue cannot be changed after construction.
+     *
+     * @param queue Queue for intercommunication
+     */
     public WorkersBootstrap(HTreeMap<UUID, WatermarkFrame> queue) {
         this.queue = queue;
     }
 
+    /**
+     * Bind this listener to the queue and add shutdown hook.
+     */
     public void bind() {
         queue.addModificationListener(this);
 
@@ -44,6 +54,9 @@ class WorkersBootstrap implements Bind.MapListener<UUID, WatermarkFrame> {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update(UUID key, WatermarkFrame oldVal, final WatermarkFrame newVal) {
         if (newVal.getStatus() == Status.WAITING) {
@@ -59,7 +72,7 @@ class WorkersBootstrap implements Bind.MapListener<UUID, WatermarkFrame> {
     private class Progress implements Watermarkable.Progress {
         private final WatermarkFrame frame;
 
-        public Progress(WatermarkFrame frame) {
+        Progress(WatermarkFrame frame) {
             this.frame = frame;
         }
 

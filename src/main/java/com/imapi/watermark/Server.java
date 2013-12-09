@@ -13,18 +13,18 @@ import java.util.UUID;
 import static spark.Spark.*;
 
 /**
- *
+ * Main server class.
  */
 public class Server {
 
-    private static final Configuration conf = Config.getConfig();
+    private static final Configuration CONF = Config.getConfig();
 
     public static void main(String[] args) {
 
 
         externalStaticFileLocation("static");
 
-        setPort(conf.getInt("server.port", 8080));
+        setPort(CONF.getInt("server.port", 8080));
 
         post(new JsonResponseTransformer("/documents", "application/json") {
             @Override

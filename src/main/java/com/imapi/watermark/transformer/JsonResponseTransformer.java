@@ -7,6 +7,10 @@ import com.imapi.watermark.domain.Document;
 import com.imapi.watermark.domain.Journal;
 import spark.ResponseTransformerRoute;
 
+/**
+ * JSON request/response transformer. Internally uses GSON.
+ * All additional domain classes should be registered here for correct serialization.
+ */
 public abstract class JsonResponseTransformer extends ResponseTransformerRoute {
 
     private static final RuntimeTypeAdapterFactory<Document> rta = RuntimeTypeAdapterFactory
@@ -16,17 +20,28 @@ public abstract class JsonResponseTransformer extends ResponseTransformerRoute {
 
     private static final Gson GSON = new GsonBuilder().registerTypeAdapterFactory(rta).create();
 
+    /**
+     * {@inheritDoc}
+     */
     protected JsonResponseTransformer(String path, String acceptType) {
         super(path, acceptType);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String render(Object object) {
         return GSON.toJson(object);
     }
 
+    /**
+     * Helper for deserialization from JSON.
+     *
+     * @param input String json
+     * @return Object of supertype Document
+     */
     public Document fromJson(String input) {
-        Document document = GSON.fromJson(input, Document.class);
-        return document;
+        return GSON.fromJson(input, Document.class);
     }
 }
