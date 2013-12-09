@@ -33,7 +33,7 @@ public class WatermarkServiceTest {
 
         with().pollInterval(20, TimeUnit.MILLISECONDS)
                 .timeout(Duration.ONE_SECOND)
-                .await("Until processing status will be WAITING")
+                .await("Until processing status will not be WAITING (progressing)")
                 .until(poll(idSuccess), not(equalTo(Status.WAITING)));
 
         with().pollInterval(20, TimeUnit.MILLISECONDS)
